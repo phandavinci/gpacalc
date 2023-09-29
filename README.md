@@ -1,4 +1,4 @@
-Just a simple calculator for calculating the GPA in TamilNade, India(Standards)
+Just a simple calculator for calculating the GPA as Anna University Standards in TamilNade, India(Standards)
 Grade Points:
                 <ul>
                     <li><i>O (Outstanding):</i> 10</li>
