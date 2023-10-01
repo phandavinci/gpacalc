@@ -50,7 +50,88 @@
         </div>
     </div>
 
-    
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const numSubjectsInput = document.getElementById("num-subjects");
+            const generateFieldsButton = document.getElementById("generate-fields");
+            const courseGradesDiv = document.getElementById("course-grades");
+            const calculateGPAButton = document.getElementById("calculate-gpa");
+            const resultDiv = document.getElementById("result");
+
+            let numSubjects = 0;
+            const courses = [];
+
+            generateFieldsButton.addEventListener("click", function() {
+                numSubjects = parseInt(numSubjectsInput.value);
+
+                if (isNaN(numSubjects) || numSubjects < 1) {
+                    alert("Please enter a valid number of subjects (at least 1).");
+                    return;
+                }
+
+                let fieldsHTML = `
+                    <table>
+                        <tr>
+                            <th>Credits</th>
+                            <th>Grade</th>
+                        </tr>
+                `;
+                for (let i = 1; i <= numSubjects; i++) {
+                    fieldsHTML += `
+                        <tr>
+                            <td><input type="number" id="credits-${i}" placeholder="Credits" min="1" required></td>
+                            <td>
+                                <select id="grade-${i}" required>
+                                    <option value="10">O</option>
+                                    <option value="9">A+</option>
+                                    <option value="8">A</option>
+                                    <option value="7">B+</option>
+                                    <option value="6">B</option>
+                                    <option value="5">C</option>
+                                    <option value="0">RA(Reappear)</option>
+                                </select>
+                            </td>
+                        </tr>
+                    `;
+                }
+
+                fieldsHTML += `</table>`;
+                courseGradesDiv.innerHTML = fieldsHTML;
+            });
+
+            calculateGPAButton.addEventListener("click", function() {
+                courses.length = 0; // Clear the courses array
+
+                for (let i = 1; i <= numSubjects; i++) {
+                    const credits = parseInt(document.getElementById(`credits-${i}`).value);
+                    const gradeSelect = document.getElementById(`grade-${i}`);
+                    const grade = parseInt(gradeSelect.value);
+
+                    if (isNaN(credits) || credits < 1) {
+                        alert(`Please enter valid credits for Subject ${i} (at least 1).`);
+                        return;
+                    }
+
+                    courses.push({ credits, grade });
+                }
+
+                calculateGPA();
+            });
+
+            function calculateGPA() {
+                let totalGradePoints = 0;
+                let totalCredits = 0;
+
+                for (const course of courses) {
+                    totalGradePoints += (course.grade * course.credits);
+                    totalCredits += course.credits;
+                }
+
+                const gpa = (totalGradePoints / totalCredits).toFixed(2);
+                resultDiv.textContent = `GPA: ${gpa}`;
+            }
+        });
+    </script>
 
 </body>
 </html>
